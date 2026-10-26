@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SerBrasil · Observatório dos Três Poderes</title>
+<link rel="icon" type="image/png" href="/favicon.png">
+<style>
+:root{--bg:#0a0f1c;--card:rgba(255,255,255,.055);--line:rgba(255,255,255,.1);--tx:#eef2fb;--mut:#8b97b3;--ac:#5b8cff;
+  --sim:#34d399;--nao:#f87171;--abs:#fbbf24;--obs:#a78bfa;--out:#64748b}
+*{box-sizing:border-box;margin:0}
+body{background:radial-gradient(70rem 40rem at 10% -10%,rgba(91,140,255,.18),transparent 60%),var(--bg);color:var(--tx);
+  font-family:Inter,"Segoe UI Variable","Segoe UI",system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.45}
+a{color:var(--ac);text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px 60px}
+header{padding:28px 0 18px;display:flex;flex-wrap:wrap;gap:16px;align-items:end;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:16px}
+.logo{background:#fff;border-radius:16px;padding:6px 10px;display:flex;box-shadow:0 4px 18px rgba(0,0,0,.35)}
+.logo img{height:64px;width:auto;display:block}
+@media(max-width:560px){.logo img{height:48px}h1{font-size:20px!important}}
+h1{font-size:28px;letter-spacing:-.02em}h1 small{display:block;font-size:13px;color:var(--mut);font-weight:500;letter-spacing:.02em;margin-top:2px}
+nav{display:flex;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px}
+nav button{background:none;border:0;color:var(--mut);font:inherit;font-weight:600;padding:8px 16px;border-radius:9px;cursor:pointer}
+nav button.on{background:var(--ac);color:#fff}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:6px 0 18px}
+input,select{background:var(--card);border:1px solid var(--line);color:var(--tx);font:inherit;padding:9px 12px;border-radius:10px;outline:none}
+input:focus,select:focus{border-color:var(--ac)}input[type=search]{flex:1;min-width:220px}
+select option{color:#000}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}@media(max-width:860px){.grid2{grid-template-columns:1fr}}
+h2{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin:6px 0 12px;display:flex;justify-content:space-between}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px}
+.card.click{cursor:pointer}.card.click:hover{border-color:rgba(91,140,255,.6)}
+.row{display:flex;gap:10px;align-items:baseline;justify-content:space-between}
+.t{font-weight:600}.m{color:var(--mut);font-size:13px}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;background:rgba(91,140,255,.16);color:#9db8ff;white-space:nowrap}
+.tag.ok{background:rgba(52,211,153,.16);color:var(--sim)}.tag.no{background:rgba(248,113,113,.16);color:var(--nao)}
+.tag.warn{background:rgba(251,191,36,.16);color:var(--abs)}.tag.gray{background:rgba(255,255,255,.08);color:var(--mut)}
+.vbar{display:flex;height:10px;border-radius:99px;overflow:hidden;margin:10px 0 6px;background:rgba(255,255,255,.08)}
+.vbar i{display:block}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--mut)}
+.legend b{color:var(--tx)}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}
+td,th{padding:4px 6px;text-align:right;border-bottom:1px solid var(--line)}td:first-child,th:first-child{text-align:left}th{color:var(--mut);font-weight:600}
+.empty{color:var(--mut);padding:18px;text-align:center;border:1px dashed var(--line);border-radius:14px}
+.err{color:var(--abs);font-size:13px;margin-bottom:8px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.pc{display:flex;gap:12px;align-items:center}.pc img{width:52px;height:64px;object-fit:cover;border-radius:10px;background:#222}
+.drawer{position:fixed;inset:0 0 0 auto;width:min(560px,100vw);background:#0e1526;border-left:1px solid var(--line);padding:22px;overflow:auto;transform:translateX(100%);transition:transform .25s;z-index:5}
+.drawer.on{transform:none}.veil{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:4;display:none}.veil.on{display:block}
+.close{float:right;background:var(--card);border:1px solid var(--line);color:var(--tx);border-radius:9px;padding:6px 12px;cursor:pointer}
+.drawer h3{font-size:20px;margin:10px 0 4px}.drawer h4{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin:20px 0 8px}
+.prof{display:flex;gap:14px;align-items:center;margin-top:14px}.prof img{width:84px;height:104px;border-radius:12px;object-fit:cover}
+footer{margin-top:30px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);padding-top:14px}
+.leg-rule{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand"><span class="logo"><img src="/logo.png" alt="SerBrasil"></span>
+      <h1>Observatório dos Três Poderes<small>Legislativo · Executivo · Judiciário · dados abertos oficiais</small></h1></div>
+    <nav id="nav">
+      <button data-t="hoje" class="on">Hoje</button><button data-t="votacoes">Votações</button>
+      <button data-t="parl">Parlamentares</button><button data-t="proj">Projetos</button><button data-t="exec">Executivo</button><button data-t="jud">Judiciário</button>
+    </nav>
+  </header>
+  <main id="main"></main>
+  <footer>
+    <div>Cada informação mostra sua origem. <span class="tag ok">Fato oficial</span> consta em registro da Câmara ou do Senado ·
+      <span class="tag">Análise</span> cálculo feito aqui a partir de dados identificados · <span class="tag warn">Pendência de verificação</span> dado indisponível ou incompleto.</div>
+    <div style="margin-top:6px">Os dados não são tempo real: dependem da publicação de cada Casa. Ausência de voto registrado não prova ausência física. Este painel não faz juízo sobre parlamentares.</div>
+  </footer>
+</div>
+<div class="veil" id="veil"></div><aside class="drawer" id="drawer"></aside>
+
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const api = async (u) => { const r = await fetch(u); const j = await r.json(); if (!r.ok) throw new Error(j.erro || r.status); return j; };
+const hoje = () => new Date(Date.now() - 3 * 3600e3).toISOString().slice(0, 10);
+const fmtD = (s) => s ? new Date(s.length > 10 ? s : s + 'T12:00').toLocaleDateString('pt-BR') : '';
+const fmtH = (s) => s ? s.slice(11, 16) : '';
+const brl = (v) => v.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+const VC = {'Sim': 'var(--sim)', 'Não': 'var(--nao)', 'Abstenção': 'var(--abs)', 'Obstrução': 'var(--obs)'};
+const vcol = (k) => VC[k] || 'var(--out)';
+const CASA = {C: 'Câmara', S: 'Senado'};
+const src = (casa, url) => `<span class="tag ok">Fato oficial · ${CASA[casa]}</span>${url ? ` <a class="m" href="${esc(url)}" target="_blank" rel="noopener">fonte ↗</a>` : ''}`;
+const state = {tab: 'hoje', date: hoje()};
+
+// ---------- componentes ----------
+function votoBar(total, n) {
+  const ks = Object.keys(total).sort((a, b) => total[b] - total[a]);
+  return `<div class="vbar">${ks.map(k => `<i style="width:${total[k] / n * 100}%;background:${vcol(k)}" title="${esc(k)}: ${total[k]}"></i>`).join('')}</div>
+    <div class="legend">${ks.map(k => `<span><s class="dot" style="background:${vcol(k)}"></s>${esc(k)} <b>${total[k]}</b></span>`).join('')}</div>`;
+}
+function partidoTable(partido) {
+  const rows = Object.entries(partido).map(([p, v]) => [p, v, Object.values(v).reduce((a, b) => a + b, 0)]).sort((a, b) => b[2] - a[2]);
+  const cols = [...new Set(rows.flatMap(r => Object.keys(r[1])))].sort();
+  return `<table><tr><th>Partido</th>${cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${rows.map(([p, v]) =>
+    `<tr><td>${esc(p)}</td>${cols.map(c => `<td>${v[c] || ''}</td>`).join('')}</tr>`).join('')}</table>`;
+}
+function votacaoCard(v) {
+  const res = v.aprovada === true ? '<span class="tag ok">Aprovada</span>' : v.aprovada === false ? '<span class="tag no">Rejeitada</span>' : '<span class="tag gray">Sem resultado informado</span>';
+  const r = v.resumo && v.resumo.n ? v.resumo : null;
+  return `<div class="card click" data-vot="${esc(v.casa + '|' + v.id)}">
+    <div class="row"><span class="m">${CASA[v.casa]} · ${esc(v.orgao)} · ${fmtD(v.data)}</span>${res}</div>
+    <div class="t" style="margin:4px 0">${esc(v.descricao)}</div>
+    ${v.ementa ? `<div class="m">${esc(v.ementa.slice(0, 220))}${v.ementa.length > 220 ? '…' : ''}</div>` : ''}
+    <div class="det">${r ? votoBar(r.total, r.n) : v.secreta ? '<div class="m" style="margin-top:8px">Votação secreta — votos individuais não publicados.</div>' : '<div class="m" style="margin-top:8px">Clique para ver os votos individuais, se houver.</div>'}</div>
+    <div class="row" style="margin-top:8px"><span>${src(v.casa, v.url)}</span><span class="m">ver por partido ▾</span></div>
+    <div class="more" hidden></div></div>`;
+}
+const errLine = (r, nome) => r.ok ? '' : `<div class="err">⚠ Pendência de verificação: ${nome} indisponível agora (${esc(r.erro)}).</div>`;
+
+// ---------- abas ----------
+async function viewAtividade(mode) {
+  const main = $('#main');
+  const de = mode === 'hoje' ? state.date : new Date(Date.now() - 3 * 3600e3 - 14 * 86400e3).toISOString().slice(0, 10), ate = mode === 'hoje' ? state.date : hoje();
+  main.innerHTML = (mode === 'hoje' ? `<div id="mov" class="m" style="margin-bottom:26px">Carregando últimos movimentos…</div><h2 style="margin-top:0">Agenda e votações por data</h2><div class="bar"><label class="m">Data</label><input type="date" id="dt" value="${state.date}"><button class="tag" id="hj" style="border:0;cursor:pointer;padding:8px 12px">hoje</button></div>`
+    : `<div class="bar"><span class="m">Votações dos últimos 14 dias (${fmtD(de)} a ${fmtD(ate)}).</span></div>`) + '<div id="out" class="m">Carregando…</div>';
+  if (mode === 'hoje') { $('#dt').onchange = (e) => { state.date = e.target.value; viewAtividade('hoje'); }; $('#hj').onclick = () => { state.date = hoje(); viewAtividade('hoje'); }; }
+  if (mode === 'hoje') loadMov();
+  let d;
+  try { d = await api(`/api/atividade?de=${de}&ate=${ate}${mode === 'hoje' ? '' : '&eventos=0'}`); } catch (e) { $('#out').innerHTML = `<div class="err">⚠ ${esc(e.message)}</div>`; return; }
+  const votos = [...d.votacoesCamara.dados, ...d.votacoesSenado.dados].sort((a, b) => (b.registro || '').localeCompare(a.registro || ''));
+  const vhtml = votos.length ? votos.map(votacaoCard).join('') : '<div class="empty">Nenhuma votação registrada no período.</div>';
+  const ev = d.eventos.dados;
+  const evhtml = ev.length ? ev.map(e => `<div class="card click" data-ev="C|${e.id}|"><div class="row"><span class="m">${fmtH(e.inicio)} · ${esc(e.orgao)}</span>
+      <span class="tag ${/cancel/i.test(e.situacao) ? 'no' : /encerr|realiz/i.test(e.situacao) ? 'ok' : 'warn'}">${esc(e.situacao)}</span></div>
+      <div class="t">${esc(e.tipo)}</div><div class="m">${esc((e.descricao || '').slice(0, 180))}${e.local ? ' · ' + esc(e.local) : ''}</div><div class="row" style="margin-top:6px"><span>${src('C', e.url)}</span><span class="m">ver detalhes ›</span></div></div>`).join('')
+    : '<div class="empty">Nenhum evento na agenda da Câmara nesta data.</div>';
+  const errs = errLine(d.votacoesCamara, 'Votações da Câmara') + errLine(d.votacoesSenado, 'Votações do Senado') + errLine(d.eventos, 'Agenda da Câmara');
+  $('#out').outerHTML = errs + (mode === 'hoje' ? `<div class="grid2"><section><h2>Agenda · Câmara <span>${ev.length}</span></h2>${evhtml}
+      <div class="m">A agenda do Senado ainda não foi integrada.</div></section><section><h2>Votações <span>${votos.length}</span></h2>${vhtml}</section></div>` : `<h2>Votações <span>${votos.length}</span></h2>${vhtml}`);
+  bindEv($('#main'));
+  const byId = Object.fromEntries(votos.map(v => [v.casa + '|' + v.id, v]));
+  document.querySelectorAll('[data-vot]').forEach(el => el.addEventListener('click', async (ev2) => {
+    if (ev2.target.closest('a')) return;
+    const more = $('.more', el), v = byId[el.dataset.vot];
+    if (!more.hidden) { more.hidden = true; return; }
+    more.hidden = false;
+    if (more.dataset.done) return;
+    more.innerHTML = '<div class="m">Carregando votos…</div>';
+    try {
+      let r = v.resumo;
+      if (v.casa === 'C') { r = await api('/api/votacao/camara/' + encodeURIComponent(v.id)); if (r.n) $('.det', el).innerHTML = votoBar(r.total, r.n); }
+      more.innerHTML = r && r.n ? partidoTable(r.partido) + `<div class="m" style="margin-top:6px"><span class="tag">Análise</span> contagem feita a partir dos votos individuais publicados (${r.n}).</div>`
+        : '<div class="m">Sem votos individuais publicados (votação simbólica ou sem registro nominal).</div>';
+      more.dataset.done = 1;
+    } catch (e) { more.innerHTML = `<div class="err">⚠ ${esc(e.message)}</div>`; }
+  }));
+}
+
+// ---------- Detalhe de reunião/evento ----------
+const bindEv = (root) => root.querySelectorAll('[data-ev]').forEach(el => el.addEventListener('click', (e) => { if (e.target.closest('a')) return; const [c, id, d] = el.dataset.ev.split('|'); openEvento(c, id, d); }));
+const pre = (t) => `<div style="white-space:pre-wrap">${esc(t)}</div>`;
+const lnk = (u, t) => u ? `<a href="${esc(u)}" target="_blank" rel="noopener">${t} ↗</a> ` : '';
+async function openEvento(casa, id, data) {
+  openDrawer('<div class="m">Carregando detalhes…</div>');
+  try {
+    const d = await api(casa === 'C' ? `/api/evento/camara/${id}` : `/api/evento/senado/${id}?data=${data}`);
+    const quando = `${fmtD((d.inicio || '').slice(0, 10))} ${fmtH(d.inicio)}${d.fim ? ' – ' + fmtH(d.fim) : ''}`;
+    let h = `<h3>${esc(d.tipo || d.titulo || 'Evento')}${casa === 'S' && d.colegiado ? ' · ' + esc(d.colegiado.sigla) : ''}</h3>
+      <div class="m">${quando} · ${esc(d.situacao || '')}${d.local ? ' · ' + esc(d.local) : ''}${d.presencial ? ' · ' + esc(d.presencial) : ''}</div><div style="margin-top:6px">${src(casa, d.url)}</div>`;
+    if (casa === 'C') {
+      h += (d.orgaos.length ? `<h4>Órgãos</h4>${d.orgaos.map(o => `<span class="tag" style="margin-right:6px">${esc(o.sigla)} · ${esc(o.nome)}</span>`).join('')}` : '') +
+        `<h4>Descrição</h4>${pre(d.descricao || 'Sem descrição.')}<div style="margin-top:8px">${lnk(d.video, 'Vídeo / registro')}${lnk(d.documentoPauta, 'Documento da pauta')}</div>` +
+        `<h4>Pauta (${d.pauta.length})</h4>` + (d.pauta.map(i => `<div class="card${i.propId ? ' click' : ''}"${i.propId ? ` data-prop="${i.propId}"` : ''}><div class="row"><span class="t">${i.ordem}. ${esc(i.titulo || '')}</span>${i.regime ? `<span class="tag gray">${esc(i.regime)}</span>` : ''}</div>
+          ${i.ementa ? `<div class="m">${esc(i.ementa.slice(0, 280))}</div>` : ''}${i.relator ? `<div class="m">Relator: ${esc(i.relator)}</div>` : ''}${i.parecer ? `<div class="m" style="margin-top:4px">${esc(i.parecer.slice(0, 300))}</div>` : ''}</div>`).join('') || '<div class="m">Nenhum item de pauta publicado para este evento.</div>') +
+        `<h4>Deputados vinculados ao evento (${d.participantes.total})</h4>` + (d.participantes.total ? `<div class="legend">${d.participantes.lista.map(x => `<span>${esc(x.nome)} <b>${esc(x.partido || '')}/${esc(x.uf)}</b></span>`).join('')}</div>${d.participantes.total > 40 ? `<div class="m" style="margin-top:6px">e mais ${d.participantes.total - 40}…</div>` : ''}<div class="m" style="margin-top:6px">Lista informada pela Câmara; não equivale, por si só, a presença registrada.</div>` : '<div class="m">Nenhum registrado.</div>') +
+        `<div class="m" style="margin-top:12px">Votações associadas: ${d.votacoes}</div>` + (d.pendencias ? `<div class="err" style="margin-top:8px">⚠ Pendência de verificação: ${esc(d.pendencias)}</div>` : '');
+    } else {
+      h += `<div class="m" style="margin-top:6px">${esc(d.colegiado?.nome || '')}${d.presidente ? ' · presidência: ' + esc(d.presidente) : ''}</div>
+        <div style="margin-top:8px">${lnk(d.links.pauta, 'Pauta')}${lnk(d.links.resultado, 'Resultado')}${lnk(d.links.ecidadania, 'e-Cidadania')}${d.videos.map(v => lnk(v.url, esc(v.titulo || 'Vídeo'))).join('')}</div>` +
+        (d.partes.map(p => `<h4>${esc(p.nome)}${p.deliberativa ? ' · deliberativa' : ''}</h4>${p.finalidade ? pre(p.finalidade) : ''}${p.observacoes ? `<div class="m" style="margin-top:6px">${esc(p.observacoes)}</div>` : ''}${p.resultado ? `<div class="card" style="margin-top:8px"><span class="tag ok">Resultado</span> ${esc(p.resultado)}</div>` : ''}
+          ${p.convidados.length ? `<div class="m" style="margin:10px 0 4px">Convidados / expositores (${p.convidados.length})</div>${p.convidados.map(c => `<div class="card"><div class="t">${esc(c.nome)}</div><div class="m">${esc(c.cargo || '')}${c.representa ? ' · representa: ' + esc(c.representa) : ''}</div></div>`).join('')}` : ''}`).join('') || '<div class="m" style="margin-top:12px">Sem detalhes por parte publicados.</div>');
+    }
+    $('#drawer .body').innerHTML = h;
+    bindProps($('#drawer'));
+  } catch (e) { $('#drawer .body').innerHTML = `<div class="err">⚠ ${esc(e.message)}</div>`; }
+}
+
+// Últimos 10 movimentos de cada Casa (eventos já iniciados + votações), do mais recente ao mais antigo.
+async function loadMov() {
+  const box = $('#mov');
+  try {
+    const d = await api('/api/movimentos?n=10');
+    const col = (casa, nome, r) => `<section><h2>${nome} · últimos 10 movimentos <span>${esc(casa === 'C' ? 'Câmara' : 'Senado')}</span></h2>${r.ok ? '' : `<div class="err">⚠ Pendência de verificação: parte dos dados indisponível (${esc(r.erro)}).</div>`}
+      ${r.dados.map(m => {
+        const st = m.tipo === 'votacao' ? (m.aprovada === true ? '<span class="tag ok">Aprovada</span>' : m.aprovada === false ? '<span class="tag no">Rejeitada</span>' : '<span class="tag gray">Votação</span>')
+          : `<span class="tag ${/cancel|não realiz/i.test(m.situacao) ? 'no' : /realiz|encerr/i.test(m.situacao) ? 'ok' : 'warn'}">${esc(m.situacao || 'Evento')}</span>`;
+        const quando = fmtD(m.data.slice(0, 10)) + (m.semHora ? '' : ' ' + fmtH(m.data));
+        const ev = m.tipo === 'evento' && m.id ? ` click" data-ev="${casa}|${m.id}|${m.data.slice(0, 10)}` : '';
+        return `<div class="card${ev}"><div class="row"><span class="m">${quando} · ${m.tipo === 'votacao' ? 'votação' : 'reunião/evento'}</span>${st}</div>
+          <div class="t">${esc((m.titulo || '').slice(0, 120))}</div><div class="m">${esc((m.detalhe || '').slice(0, 200))}</div>
+          <div class="row" style="margin-top:6px"><span><span class="tag ok">Fato oficial · ${casa === 'C' ? 'Câmara' : 'Senado'}</span>${m.url ? ` <a class="m" href="${esc(m.url)}" target="_blank" rel="noopener">fonte ↗</a>` : ''}</span>${ev ? '<span class="m">ver detalhes ›</span>' : ''}</div></div>`;
+      }).join('') || '<div class="empty">Sem movimentos no período.</div>'}</section>`;
+    box.className = ''; box.innerHTML = `<div class="grid2">${col('C', 'Câmara dos Deputados', d.camara)}${col('S', 'Senado Federal', d.senado)}</div>
+      <div class="m">Período: ${fmtD(d.janela.de)} a ${fmtD(d.janela.ate)}. Votações do Senado trazem só a data. Eventos futuros ou ainda não iniciados ficam na agenda abaixo. Clique em uma reunião ou evento para ver pauta, participantes e documentos.</div>`;
+    bindEv(box);
+  } catch (e) { box.innerHTML = `<div class="err">⚠ ${esc(e.message)}</div>`; }
+}
+
+const UFS = 'AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO'.split(' ');
+async function viewParl() {
+  $('#main').innerHTML = `<div class="bar"><input type="search" id="q" placeholder="Buscar deputado ou senador por nome ou partido…">
+    <select id="casa"><option value="">Câmara e Senado</option><option value="C">Câmara</option><option value="S">Senado</option></select>
+    <select id="uf"><option value="">Todas as UFs</option>${UFS.map(u => `<option>${u}</option>`).join('')}</select></div><div id="out" class="m">Carregando…</div>`;
+  let tm; const go = async () => {
+    try {
+      const d = await api(`/api/parlamentares?q=${encodeURIComponent($('#q').value)}&casa=${$('#casa').value}&uf=${$('#uf').value}`);
+      $('#out').className = '';
+      $('#out').innerHTML = `<div class="m" style="margin-bottom:8px">${d.total} resultado(s)${d.total > 60 ? ' — mostrando 60, refine a busca' : ''}</div><div class="pgrid">${d.dados.map(p =>
+        `<div class="card click pc" data-p="${p.casa}|${p.id}"><img loading="lazy" src="${esc(p.foto)}" alt=""><div><div class="t">${esc(p.nome)}</div>
+        <div class="m">${esc(p.partido)} · ${esc(p.uf)}</div><span class="tag">${p.casa === 'C' ? 'Deputado' : 'Senador'}</span></div></div>`).join('')}</div>`;
+      document.querySelectorAll('[data-p]').forEach(el => el.onclick = () => openParl(...el.dataset.p.split('|')));
+    } catch (e) { $('#out').innerHTML = `<div class="err">⚠ ${esc(e.message)}</div>`; }
+  };
+  ['q', 'casa', 'uf'].forEach(i => $('#' + i).addEventListener('input', () => { clearTimeout(tm); tm = setTimeout(go, 250); }));
+  go();
+}
+async function openParl(casa, id) {
+  openDrawer('<div class="m">Carregando perfil…</div>');
+  try {
+    if (casa === 'C') {
+      const d = await api('/api/deputado/' + id), p = d.perfil;
+      const desp = d.despesas.status === 'ok' ? `<div class="card"><div class="t">${brl(d.despesas.total)} <span class="m">em ${d.despesas.n} documentos no ano</span></div>
+          <table>${d.despesas.porTipo.map(([t, v]) => `<tr><td>${esc(t)}</td><td>${brl(v)}</td></tr>`).join('')}</table>
+          <div class="m" style="margin-top:6px"><span class="tag">Análise</span> soma dos valores líquidos publicados (cota parlamentar). Valor alto, por si só, não indica irregularidade.</div></div>`
+        : `<div class="card"><span class="tag warn">Pendência de verificação</span><div class="m" style="margin-top:6px">${d.despesas.status === 'erro' ? 'Falha ao consultar' : 'A API não retornou despesas para este parlamentar'} neste ano. Consulte o <a href="${esc(d.url)}" target="_blank" rel="noopener">perfil oficial ↗</a>.</div></div>`;
+      $('#drawer .body').innerHTML = (p ? `<div class="prof"><img src="${esc(p.foto)}" alt=""><div><h3>${esc(p.nome)}</h3><div class="m">${esc(p.partido)} · ${esc(p.uf)} · ${esc(p.situacao || '')}</div>
+          <div class="m">${esc(p.nomeCivil || '')}${p.escolaridade ? ' · ' + esc(p.escolaridade) : ''}</div><div style="margin-top:6px">${src('C', d.url)}</div></div></div>` : '<div class="err">⚠ perfil indisponível</div>') +
+        `<h4>Projetos de autoria (mais recentes)</h4>${d.proposicoes.map(propLi).join('') || '<div class="m">Nenhum encontrado.</div>'}
+         <h4>Órgãos de que participa</h4>${d.orgaos.map(o => `<div class="card"><span class="t">${esc(o.sigla)}</span> <span class="tag gray">${esc(o.titulo)}</span><div class="m">${esc(o.nome)}</div></div>`).join('') || '<div class="m">Nenhum registro vigente.</div>'}
+         <h4>Discursos recentes</h4>${d.discursos.map(x => `<div class="card"><div class="m">${fmtD(x.data)} · ${esc(x.tipo)}</div><div>${esc((x.resumo || '').slice(0, 260))}</div>${x.url ? `<a class="m" href="${esc(x.url)}" target="_blank" rel="noopener">texto ↗</a>` : ''}</div>`).join('') || '<div class="m">Nenhum discurso registrado.</div>'}
+         <h4>Despesas (cota parlamentar)</h4>${desp}${painelAtuacao('C', d.atuacao)}`;
+      bindProps();
+    } else {
+      const [d, lista] = await Promise.all([api('/api/senador/' + id), api('/api/parlamentares?casa=S&limit=200')]);
+      const p = lista.dados.find(x => x.id == id) || {};
+      $('#drawer .body').innerHTML = `<div class="prof"><img src="${esc(p.foto)}" alt=""><div><h3>${esc(p.nome || 'Senador')}</h3><div class="m">${esc(p.partido || '')} · ${esc(p.uf || '')}</div>
+        <div style="margin-top:6px">${src('S', d.url)}</div></div></div>
+        <h4>Como votou (votações nominais, ${fmtD(d.janela.de)} a ${fmtD(d.janela.ate)})</h4>${d.votos.map(x => `<div class="card"><div class="row"><span class="m">${fmtD(x.data)}</span>
+          <span class="tag" style="background:none;border:1px solid ${vcol(x.voto)};color:${vcol(x.voto)}">${esc(x.voto)}</span></div><div>${esc(x.descricao)}</div><a class="m" href="${esc(x.url)}" target="_blank" rel="noopener">matéria ↗</a></div>`).join('')
+          || '<div class="m">Nenhum voto nominal encontrado no período.</div>'}
+        ${painelAtuacao('S', d.atuacao)}`;
+    }
+  } catch (e) { $('#drawer .body').innerHTML = `<div class="err">⚠ ${esc(e.message)}</div>`; }
+}
+// Painel "Desempenho e Atuação Pública": indicadores independentes, sem nota única nem ranking.
+// Lacunas ficam explícitas: dado não integrado ≠ desempenho zero.
+function painelAtuacao(casa, a) {
+  const ind = (nome, valor, nota) => `<div class="card"><div class="row"><span class="m">${nome}</span><span class="t">${valor}</span></div>${nota ? `<div class="m" style="margin-top:4px">${nota}</div>` : ''}</div>`;
+  let h = '<h4>Atuação — indicadores (sem nota única nem ranking)</h4>';
+  if (!a) h += '<div class="card"><span class="tag warn">Pendência de verificação</span> <span class="m">indicadores indisponíveis agora.</span></div>';
+  else if (casa === 'C') {
+    const p = a.proposicoes, d = a.discursos;
+    h += p ? ind(`Proposições de autoria em ${a.ano}`, p.total + (p.possivelmenteMaisDe100 ? '+' : ''),
+      Object.entries(p.porTipo).sort((x, y) => y[1] - x[1]).map(([k, v]) => `${esc(k)} ${v}`).join(' · ') + ' · inclui requerimentos e indicações; quantidade não mede relevância.' + (p.possivelmenteMaisDe100 ? ' Limite de 100 registros atingido.' : '')) : '';
+    h += d ? ind(`Discursos registrados em ${a.ano}`, d.total + (d.possivelmenteMaisDe100 ? '+' : ''), 'Contagem de pronunciamentos em plenário e comissões publicados pela Câmara.') : '';
+  } else {
+    const t = a.votacoesNominais, reg = Object.entries(a.porCodigo);
+    h += ind(`Votações nominais no período (${fmtD(a.janela.de)} a ${fmtD(a.janela.ate)})`, t,
+      reg.map(([k, v]) => `${esc(k)}: ${v}`).join(' · ') + '<br>Códigos oficiais do Senado. Ausência de voto registrado não prova ausência física nem falta injustificada: licenças e missões não são distinguidas aqui.');
+  }
+  h += `<div class="card"><div class="m"><b style="color:var(--tx)">Ainda não integrado</b> (não significa desempenho nulo): proposições convertidas em lei e tempo de tramitação, requerimentos de informação e respostas,
+    emendas empenhadas/pagas, resultados e impacto público, transparência documental. Sem comparação entre parlamentares: cargo, atribuições (relatorias, lideranças) e período precisam ser considerados.</div>
+    <div class="m" style="margin-top:6px"><span class="tag">Análise</span> contagens feitas aqui a partir de registros oficiais; abra a fonte para conferir.</div></div>`;
+  return h;
+}
+const propLi = (p) => `<div class="card click" data-prop="${p.id}"><div class="row"><span class="t">${esc(p.sigla)}</span><span class="m">${fmtD(p.apresentacao)}</span></div><div class="m">${esc((p.ementa || '').slice(0, 240))}${(p.ementa || '').length > 240 ? '…' : ''}</div></div>`;
+const bindProps = (root = document) => root.querySelectorAll('[data-prop]').forEach(el => el.onclick = () => openProp(el.dataset.prop));
+
+async function viewProj() {
+  $('#main').innerHTML = `<div class="bar"><input type="search" id="q" placeholder="Palavras-chave (ex.: saúde, reforma tributária, educação)…"></div><div id="out" class="m">Carregando…</div>`;
+  let tm; const go = async () => {
+    try {
+      const d = await api('/api/proposicoes?q=' + encodeURIComponent($('#q').value));
+      $('#out').className = '';
+      $('#out').innerHTML = `<div class="m" style="margin-bottom:8px">${$('#q').value ? 'Resultados' : 'Apresentados mais recentemente'} · Câmara · ${src('C')}</div>${d.dados.map(propLi).join('') || '<div class="empty">Nada encontrado.</div>'}
+        <div class="m">Proposições do Senado ainda não foram integradas.</div>`;
+      bindProps($('#out'));
+    } catch (e) { $('#out').innerHTML = `<div class="err">⚠ ${esc(e.message)}</div>`; }
+  };
+  $('#q').addEventListener('input', () => { clearTimeout(tm); tm = setTimeout(go, 350); }); go();
+}
+async function openProp(id) {
+  openDrawer('<div class="m">Carregando tramitação…</div>');
+  try {
+    const d = await api('/api/proposicao/' + id);
+    $('#drawer .body').innerHTML = `<h3>${esc(d.sigla)}</h3><div class="m">Apresentado em ${fmtD(d.apresentacao)} · ${esc(d.situacao || 'situação não informada')}${d.orgao ? ' · ' + esc(d.orgao) : ''}</div>
+      <p style="margin:10px 0">${esc(d.ementa)}</p><div>${src('C', d.url)}${d.urlInteiroTeor ? ` · <a class="m" href="${esc(d.urlInteiroTeor)}" target="_blank" rel="noopener">inteiro teor ↗</a>` : ''}</div>
+      <h4>Últimas tramitações</h4>${d.tramitacoes.map(t => `<div class="card"><div class="m">${fmtD(t.data)} · ${esc(t.orgao)} · ${esc(t.situacao || '')}</div><div>${esc(t.despacho || '')}</div></div>`).join('') || '<div class="m">Sem tramitações.</div>'}`;
+  } catch (e) { $('#drawer .body').innerHTML = `<div class="err">⚠ ${esc(e.message)}</div>`; }
+}
+
+// ---------- Executivo ----------
+const ORGAOS = {20000: 'Presidência da República', 25000: 'Fazenda', 26000: 'Educação', 36000: 'Saúde', 30000: 'Justiça e Segurança Pública', 52000: 'Defesa',
+  39000: 'Transportes', 22000: 'Agricultura e Pecuária', 53000: 'Integração e Desenvolvimento Regional', 55000: 'Desenvolvimento e Assistência Social', 41000: 'Comunicações',
+  32000: 'Minas e Energia', 24000: 'Ciência, Tecnologia e Inovação', 44000: 'Meio Ambiente', 35000: 'Relações Exteriores', 38000: 'Trabalho e Emprego',
+  47000: 'Planejamento e Orçamento', 51000: 'Esporte', 42000: 'Cultura'};
+const MODS = {6: 'Dispensa', 5: 'Pregão eletrônico', 3: 'Concorrência eletrônica', 7: 'Inexigibilidade'};
+const dAgo = (n) => new Date(Date.now() - 3 * 3600e3 - n * 86400e3).toISOString().slice(0, 10);
+const srcE = (txt) => `<span class="tag ok">Fato oficial · ${esc(txt)}</span>`;
+const xs = {sub: 'contratos'};
+async function viewExec() {
+  const subs = {contratos: 'Contratos', compras: 'Contratações (PNCP)', mpv: 'Medidas provisórias', leg: 'Legislação', pt: 'Portal da Transparência'};
+  $('#main').innerHTML = `<div class="bar">${Object.entries(subs).map(([k, v]) => `<button class="tag" data-s="${k}" style="border:0;cursor:pointer;padding:8px 14px;font-size:13px;${xs.sub === k ? 'background:var(--ac);color:#fff' : ''}">${v}</button>`).join('')}</div><div id="ex"></div>`;
+  document.querySelectorAll('[data-s]').forEach(b => b.onclick = () => { xs.sub = b.dataset.s; viewExec(); });
+  const out = $('#ex'), load = (h) => out.innerHTML = h;
+  try {
+    if (xs.sub === 'contratos') {
+      load(`<div class="bar"><label class="m">Órgão (código SIAFI)</label><select id="og">${Object.entries(ORGAOS).map(([c, n]) => `<option value="${c}" ${c == (xs.og || 26000) ? 'selected' : ''}>${c} · ${n}</option>`).join('')}</select>
+        <span class="m">vigência iniciada nos últimos 180 dias</span></div><div id="r" class="m">Carregando…</div>`);
+      $('#og').onchange = (e) => { xs.og = e.target.value; viewExec(); };
+      const d = await api(`/api/executivo/contratos?orgao=${xs.og || 26000}&de=${dAgo(180)}&ate=${hoje()}`);
+      $('#r').outerHTML = `<div class="m" style="margin-bottom:8px">${d.total} contrato(s) no período · mostrando ${d.dados.length} · ${srcE(d.fonte)}</div>` + (d.dados.map(c => `<div class="card">
+        <div class="row"><span class="m">${esc(c.orgao)} · ${esc(c.unidade)}</span><span class="tag">${esc(c.modalidade || '')}</span></div>
+        <div class="t" style="margin:4px 0">Contrato ${esc(c.numero)} — ${esc(c.fornecedor)}</div><div class="m">${esc((c.objeto || '').replace(/\s+/g, ' ').slice(0, 260))}${(c.objeto || '').length > 260 ? '…' : ''}</div>
+        <div class="row" style="margin-top:8px"><span class="m">${fmtD(c.inicio?.slice(0, 10))} → ${fmtD(c.fim?.slice(0, 10))} · CNPJ/CPF ${esc(c.fornecedorId)}</span><span class="t">${c.valor != null ? brl(c.valor) : '—'}</span></div></div>`).join('')
+        || '<div class="empty">Nenhum contrato encontrado.</div>');
+    } else if (xs.sub === 'compras') {
+      load(`<div class="bar"><select id="md">${Object.entries(MODS).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select>
+        <input type="date" id="de" value="${xs.de || dAgo(60)}"><input type="date" id="ate" value="${xs.ate || dAgo(30)}"><button class="tag" id="ok" style="border:0;cursor:pointer;padding:8px 14px">buscar</button></div>
+        <div class="m" style="margin-bottom:8px">Somente órgãos da esfera federal. A base costuma ter defasagem de semanas: períodos muito recentes podem vir vazios.</div><div id="r" class="m">Carregando…</div>`);
+      $('#md').value = xs.md || 6;
+      $('#ok').onclick = () => { xs.md = $('#md').value; xs.de = $('#de').value; xs.ate = $('#ate').value; viewExec(); };
+      const d = await api(`/api/executivo/contratacoes?de=${xs.de || dAgo(60)}&ate=${xs.ate || dAgo(30)}&modalidade=${xs.md || 6}`);
+      $('#r').outerHTML = `<div class="m" style="margin-bottom:8px">${d.dados.length} federal(is) de ${d.naPagina} na página (${d.totalPeriodo} no período, todas as esferas) · ${srcE(d.fonte)}</div>` + (d.dados.map(c => `<div class="card">
+        <div class="row"><span class="m">${esc(c.orgao)} · ${esc(c.uf || '')}</span><span class="tag gray">${esc(c.situacao || '')}</span></div>
+        <div class="t" style="margin:4px 0">${esc((c.objeto || '').slice(0, 200))}</div><div class="m">${esc(c.modalidade)} · ${esc(c.amparo || '')} · publicada ${fmtD(c.publicadaEm?.slice(0, 10))}</div>
+        <div class="row" style="margin-top:8px"><span><a class="m" href="${esc(c.url)}" target="_blank" rel="noopener">PNCP ${esc(c.controle)} ↗</a></span>
+        <span class="t">${c.homologado ? brl(c.homologado) + ' <span class="m">homologado</span>' : c.estimado ? brl(c.estimado) + ' <span class="m">estimado</span>' : '—'}</span></div></div>`).join('')
+        || '<div class="empty">Nada encontrado neste período para órgãos federais. Tente outro intervalo ou modalidade.</div>');
+    } else if (xs.sub === 'mpv') {
+      load('<div id="r" class="m">Carregando…</div>');
+      const d = await api('/api/executivo/mpvs');
+      $('#r').outerHTML = `<div class="m" style="margin-bottom:8px">Medidas provisórias editadas pelo Presidente e em tramitação no Congresso · ${srcE(d.fonte)}</div>` + d.dados.map(p => `<div class="card click" data-prop="${p.id}">
+        <div class="row"><span class="t">${esc(p.sigla)}</span><span class="m">${fmtD(p.apresentacao)}</span></div><div class="m">${esc(p.ementa)}</div></div>`).join('');
+      bindProps($('#ex'));
+    } else if (xs.sub === 'leg') {
+      load(`<div class="card"><span class="tag warn">Sem acesso automatizado</span><p style="margin:8px 0">O Portal da Legislação (Planalto) não oferece API aberta e bloqueia consultas automatizadas, por isso os atos normativos não são importados aqui.
+        Use os links oficiais abaixo; as medidas provisórias estão na aba ao lado, via API da Câmara.</p>
+        <div class="legend" style="flex-direction:column;gap:8px;font-size:14px">
+        <a href="https://legislacao.presidencia.gov.br/" target="_blank" rel="noopener">Portal da Legislação — busca de leis, decretos e demais atos ↗</a>
+        <a href="https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2026/decreto/" target="_blank" rel="noopener">Decretos de 2026 (Planalto) ↗</a>
+        <a href="https://www.in.gov.br/leiturajornal" target="_blank" rel="noopener">Diário Oficial da União — leitura do dia ↗</a></div></div>`);
+    } else {
+      load('<div id="r" class="m">Carregando…</div>');
+      const st = await api('/api/executivo/status');
+      if (!st.transparencia) { $('#r').outerHTML = `<div class="card"><span class="tag warn">Aguardando chave de acesso</span><p style="margin:8px 0">O conector do Portal da Transparência está pronto (despesas por órgão, contratos, emendas parlamentares e viagens),
+        mas a API exige uma chave gratuita. Cadastre seu e-mail em <a href="https://portaldatransparencia.gov.br/api-de-dados/cadastrar-email" target="_blank" rel="noopener">portaldatransparencia.gov.br/api-de-dados/cadastrar-email</a>,
+        copie <code>.env.example</code> para <code>.env</code>, preencha <code>PORTAL_TRANSPARENCIA_KEY</code> e reinicie o servidor.</p></div>`; return; }
+      $('#r').outerHTML = (await Promise.all(['despesas', 'emendas'].map(async r => tabelaPT(r, await api('/api/transparencia/' + r))))).join('');
+    }
+  } catch (e) { load(`<div class="err">⚠ ${esc(e.message)}</div>`); }
+}
+function tabelaPT(nome, d) {
+  if (d.erro) return `<div class="err">⚠ ${esc(nome)}: ${esc(d.erro)}</div>`;
+  const rows = d.dados.slice(0, 15), cols = rows.length ? Object.keys(rows[0]).filter(k => typeof rows[0][k] !== 'object').slice(0, 6) : [];
+  return `<h2>${esc(nome)} <span>${esc(d.fonte || '')}</span></h2>` + (rows.length ? `<div class="card" style="overflow:auto"><table><tr>${cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${rows.map(r => `<tr>${cols.map(c => `<td>${esc(r[c])}</td>`).join('')}</tr>`).join('')}</table></div>` : '<div class="empty">Sem registros.</div>');
+}
+
+// ---------- Judiciário ----------
+async function viewJud() {
+  const st = await api('/api/judiciario/status').catch(() => ({}));
+  const links = [
+    ['STF — consulta de processos', 'https://portal.stf.jus.br/processos/'], ['STF — jurisprudência', 'https://jurisprudencia.stf.jus.br/'],
+    ['STF — Corte Aberta (transparência e estatísticas)', 'https://transparencia.stf.jus.br/'], ['STJ — consulta de processos', 'https://www.stj.jus.br/sites/portalp/Processos'],
+    ['STJ — jurisprudência (SCON)', 'https://scon.stj.jus.br/SCON/'], ['CNJ — Justiça em Números', 'https://justica-em-numeros.cnj.jus.br/'],
+    ['CNJ — DataJud (API pública)', 'https://www.cnj.jus.br/sistemas/datajud/api-publica/']];
+  $('#main').innerHTML = `<div class="grid2"><section><h2>Consulta de processo (DataJud · CNJ)</h2>
+      <div class="bar"><input type="search" id="np" placeholder="Número único: 0000000-00.0000.0.00.0000"><button class="tag" id="bt" style="border:0;cursor:pointer;padding:9px 14px">consultar</button></div>
+      <div id="r" class="m">Informe o número único do processo (20 dígitos). Só processos públicos aparecem; a consulta identifica o tribunal pelo próprio número.</div>
+      ${st.datajud ? '' : `<div class="card" style="margin-top:12px"><span class="tag warn">Aguardando chave de acesso</span><p style="margin:8px 0">O conector do DataJud está pronto, mas a API exige uma chave. O CNJ publica a chave pública na
+        <a href="https://www.cnj.jus.br/sistemas/datajud/api-publica/" target="_blank" rel="noopener">documentação da API Pública</a>. Copie <code>.env.example</code> para <code>.env</code>,
+        preencha <code>DATAJUD_API_KEY</code> e reinicie o servidor. Enquanto isso, a validação do número (formato, dígito verificador e tribunal) já funciona.</p></div>`}
+    </section><section><h2>Fontes oficiais</h2><div class="card"><div class="m" style="margin-bottom:8px">O STF e os demais tribunais não oferecem API aberta para consulta automatizada; use os portais oficiais:</div>
+      <div class="legend" style="flex-direction:column;gap:8px;font-size:14px">${links.map(([t, u]) => `<a href="${u}" target="_blank" rel="noopener">${t} ↗</a>`).join('')}</div></div></section></div>`;
+  const run = async () => {
+    const n = $('#np').value; $('#r').className = 'm'; $('#r').textContent = 'Consultando…';
+    try {
+      const d = await api('/api/judiciario/processo?numero=' + encodeURIComponent(n));
+      const head = d.numero ? `<div class="card"><div class="t">${esc(d.numero)}</div><div class="m">${esc(d.ramo)} · ${esc(d.tribunal || 'tribunal não identificado')} · dígito verificador ${d.digitoVerificadorValido ? '<span class="tag ok">válido</span>' : '<span class="tag no">inválido</span>'}</div></div>` : '';
+      if (d.erro) { $('#r').innerHTML = head + `<div class="err">⚠ ${esc(d.erro)}</div>`; return; }
+      if (d.configurado === false) { $('#r').innerHTML = head + `<div class="m">Número válido. ${esc(d.mensagem)}</div>`; return; }
+      $('#r').innerHTML = head + (d.dados.length ? d.dados.map(p => `<div class="card"><div class="row"><span class="t">${esc(p.classe || '')}</span><span class="tag gray">${esc(p.grau || '')}</span></div>
+        <div class="m">${esc(p.orgaoJulgador || '')} · ajuizado em ${fmtD((p.ajuizamento || '').slice(0, 10))}${p.nivelSigilo ? ' · sigilo nível ' + esc(p.nivelSigilo) : ''}</div>
+        <div class="m">${esc((p.assuntos || []).join(' · '))}</div><h4 style="margin:12px 0 6px;font-size:12px;color:var(--mut)">ÚLTIMAS MOVIMENTAÇÕES</h4>
+        ${p.movimentos.map(m => `<div class="row" style="margin:3px 0"><span>${esc(m.nome)}${m.complementos.length ? ` <span class="m">(${esc(m.complementos.join(', '))})</span>` : ''}</span><span class="m">${fmtD((m.data || '').slice(0, 10))}</span></div>`).join('')}
+        <div style="margin-top:8px">${srcE(d.fonte)}</div></div>`).join('') : '<div class="empty">Nenhum processo público encontrado com esse número neste tribunal.</div>');
+    } catch (e) { $('#r').innerHTML = `<div class="err">⚠ ${esc(e.message)}</div>`; }
+  };
+  $('#bt').onclick = run; $('#np').addEventListener('keydown', e => e.key === 'Enter' && run());
+}
+
+// ---------- gaveta e navegação ----------
+function openDrawer(html) { $('#drawer').innerHTML = `<button class="close" id="cl">Fechar ✕</button><div class="body">${html}</div>`; $('#drawer').classList.add('on'); $('#veil').classList.add('on'); $('#cl').onclick = closeDrawer; }
+function closeDrawer() { $('#drawer').classList.remove('on'); $('#veil').classList.remove('on'); }
+$('#veil').onclick = closeDrawer; addEventListener('keydown', e => e.key === 'Escape' && closeDrawer());
+function go(t) {
+  state.tab = t; history.replaceState(null, '', '#' + t);
+  document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
+  ({hoje: () => viewAtividade('hoje'), votacoes: () => viewAtividade('votacoes'), parl: viewParl, proj: viewProj, exec: viewExec, jud: viewJud})[t]();
+}
+document.querySelectorAll('#nav button').forEach(b => b.onclick = () => go(b.dataset.t));
+const fromHash = () => ['hoje', 'votacoes', 'parl', 'proj', 'exec', 'jud'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'hoje';
+addEventListener('hashchange', () => fromHash() !== state.tab && go(fromHash()));
+go(fromHash());
+</script>
+</body>
+</html>

@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Eleição 2026 · Voto a Voto</title>
+<style>
+:root{--bg:#070b16;--tx:#f5f7fc;--mut:#8a96b4;--line:rgba(255,255,255,.09);--glass:rgba(255,255,255,.06);
+  --a:#3b82ff;--b:#ff4d4a;--ok:#34d399;--warn:#fbbf24}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:#000;color:var(--tx);font-family:Inter,"Segoe UI Variable","Segoe UI",system-ui,sans-serif;overflow:hidden;font-variant-numeric:tabular-nums}
+#stage{position:relative;height:100vh;aspect-ratio:9/16;max-width:100vw;margin:0 auto;overflow:hidden;container-type:size;
+  background:radial-gradient(90cqw 70cqw at 0% 0%,rgba(59,130,255,.30),transparent 60%),
+             radial-gradient(90cqw 70cqw at 100% 100%,rgba(255,77,74,.26),transparent 60%),var(--bg)}
+/* topo */
+.stories{position:absolute;left:5cqw;right:5cqw;top:3cqw;display:flex;gap:1cqw}
+.stories i{flex:1;height:.8cqw;border-radius:9px;background:rgba(255,255,255,.14);overflow:hidden}
+.stories i b{display:block;height:100%;width:0;background:#fff}
+.stories i.done b{width:100%}
+.stories i.cur b{animation:fill var(--dur) linear forwards}
+@keyframes fill{to{width:100%}}
+header{position:absolute;left:5cqw;right:5cqw;top:6cqw;display:flex;justify-content:space-between;align-items:center}
+.brand{font-weight:900;font-size:3.6cqw;letter-spacing:.14em;text-transform:uppercase}
+.brand span{color:var(--mut);font-weight:600;letter-spacing:.1em}
+.chip{display:flex;align-items:center;gap:1.4cqw;padding:1.2cqw 3cqw;border-radius:99px;font-weight:800;font-size:3cqw;letter-spacing:.06em;text-transform:uppercase;background:var(--glass);border:1px solid var(--line)}
+.chip:before{content:"";width:2.2cqw;height:2.2cqw;border-radius:50%;background:var(--c,#888);box-shadow:0 0 0 0 var(--c);animation:pulse 1.6s infinite}
+.chip.live{--c:var(--warn)}.chip.final{--c:var(--ok)}.chip.stale{--c:#f87171}
+@keyframes pulse{70%{box-shadow:0 0 0 2cqw transparent}100%{box-shadow:0 0 0 0 transparent}}
+/* slides */
+.slide{position:absolute;inset:17cqw 5cqw 13cqw;display:flex;flex-direction:column;opacity:0;transition:opacity .45s;pointer-events:none}
+.slide.on{opacity:1}
+.slide.enter>*{animation:up .6s cubic-bezier(.2,.8,.2,1) both}
+.slide.enter>*:nth-child(2){animation-delay:.08s}.slide.enter>*:nth-child(3){animation-delay:.16s}
+.slide.enter>*:nth-child(4){animation-delay:.24s}.slide.enter>*:nth-child(5){animation-delay:.32s}
+@keyframes up{from{opacity:0;transform:translateY(3cqw)}}
+.kicker{font-size:3cqw;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--mut);margin-bottom:1.5cqw}
+h1{font-size:9cqw;line-height:1;font-weight:900;letter-spacing:-.02em}
+h1 em{font-style:normal;background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{font-size:3.4cqw;color:var(--mut);margin:2cqw 0 4cqw}
+.glass{background:var(--glass);border:1px solid var(--line);border-radius:4cqw;backdrop-filter:blur(10px)}
+/* placar */
+.cands{display:grid;grid-template-columns:1fr 1fr;gap:3cqw}
+.cand{padding:4.5cqw 4cqw;position:relative;overflow:hidden}
+.cand:before{content:"";position:absolute;inset:0 0 auto 0;height:1.2cqw;background:var(--c)}
+.cand:after{content:"";position:absolute;inset:auto -20% -40% -20%;height:70%;background:radial-gradient(closest-side,var(--c),transparent);opacity:.22}
+.cand .num{font-size:3.2cqw;font-weight:800;color:var(--c);letter-spacing:.1em}
+.cand .nm{font-size:5.4cqw;font-weight:900;line-height:1.05;margin:1.2cqw 0 3cqw;text-transform:uppercase}
+.cand .pc{font-size:12.5cqw;white-space:nowrap;font-weight:900;line-height:.95;letter-spacing:-.04em;position:relative}
+.cand .pc small{font-size:6cqw;font-weight:800;margin-left:.6cqw}
+.cand .vt{font-size:3.5cqw;color:var(--mut);margin-top:2.4cqw;position:relative}
+.cand .vt b{color:var(--tx)}
+.tug{position:relative;margin:5cqw 0 2cqw;height:7cqw;border-radius:99px;overflow:hidden;display:flex;background:rgba(255,255,255,.08)}
+.tug i{display:block;height:100%;transition:width 1s}
+.tug:after{content:"";position:absolute;left:50%;top:0;bottom:0;width:.5cqw;background:#fff;opacity:.9}
+.lead{text-align:center;font-size:4.2cqw;font-weight:800;margin:2cqw 0 5cqw}
+.lead span{color:var(--c)}
+.stats{display:grid;grid-template-columns:auto 1fr;gap:4cqw;align-items:center;padding:4cqw}
+.ring{position:relative;width:24cqw;height:24cqw}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:4.5;stroke-linecap:round}
+.ring .t{stroke:rgba(255,255,255,.1)}.ring .f{stroke:var(--warn);transition:stroke-dasharray 1s}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:5.4cqw;font-weight:900}
+.stats .l{font-size:3.5cqw;color:var(--mut);line-height:1.6}.stats .l b{color:var(--tx);font-weight:800}
+/* dumbbell */
+.leg{display:flex;justify-content:space-between;align-items:center;font-size:3cqw;color:var(--mut);margin-bottom:2cqw}
+.leg .k{display:flex;gap:3cqw}
+.leg .k span:before{content:"";display:inline-block;width:2.6cqw;height:2.6cqw;border-radius:50%;margin-right:1cqw;vertical-align:-.3cqw;border:.6cqw solid var(--mut)}
+.leg .k span.f:before{background:var(--mut)}
+.side{display:flex;justify-content:space-between;font-size:3cqw;font-weight:800;margin-bottom:1cqw;letter-spacing:.05em;text-transform:uppercase}
+.side .l{color:var(--a)}.side .r{color:var(--b)}
+.list{flex:1;display:flex;flex-direction:column;justify-content:space-between;min-height:0}
+.d{display:grid;grid-template-columns:30cqw 1fr 23cqw;align-items:center;gap:2cqw;padding:0 3cqw;flex:1;border-bottom:1px solid var(--line)}
+.d:last-child{border:0}
+.d .n{font-size:3.8cqw;font-weight:900;line-height:1.1}.d .n small{display:block;font-size:2.4cqw;font-weight:600;color:var(--mut);letter-spacing:.05em}
+.d .n i{display:block;font-style:normal;font-size:2.3cqw;font-weight:800;margin-top:.4cqw}.d .n i.ok{color:var(--ok)}.d .n i.pp{color:var(--warn)}
+.d .v{text-align:right;white-space:nowrap;font-size:3.7cqw;font-weight:900;line-height:1.1}.d .v small{display:block;font-size:2.4cqw;font-weight:700;color:var(--mut)}
+.trk{position:relative;height:100%;min-height:5cqw}
+.trk .mid{position:absolute;left:50%;top:20%;bottom:20%;width:.3cqw;background:rgba(255,255,255,.28)}
+.trk .gr{position:absolute;left:0;right:0;top:50%;height:.3cqw;background:var(--line)}
+.trk .ln{position:absolute;top:50%;height:.9cqw;margin-top:-.45cqw;border-radius:9px;opacity:.5;transition:all 1s}
+.trk .p{position:absolute;top:50%;width:3.2cqw;height:3.2cqw;margin:-1.6cqw 0 0 -1.6cqw;border-radius:50%;transition:left 1s}
+.trk .p1{border:.7cqw solid var(--mut);background:var(--bg)}
+.trk .p2{width:4.4cqw;height:4.4cqw;margin:-2.2cqw 0 0 -2.2cqw;box-shadow:0 0 0 .8cqw var(--bg)}
+.d.big{padding:0 3cqw;grid-template-columns:24cqw 1fr 28cqw}.d.big .n{font-size:4.4cqw}.d.big .v{font-size:4cqw}
+/* brasil 1x2 */
+.bcard{padding:5cqw 4cqw 4cqw;margin-bottom:3cqw}
+.bcard .t{display:flex;justify-content:space-between;align-items:baseline}
+.bcard .t b{font-size:5.4cqw;font-weight:900;text-transform:uppercase;color:var(--c)}
+.bcard .t span{font-size:4.6cqw;font-weight:900;padding:.8cqw 2.4cqw;border-radius:99px;background:color-mix(in srgb,var(--c) 22%,transparent);color:var(--c)}
+.bcard .trk{height:12cqw;margin:2cqw 0 0}
+.bcard .trk .p{width:4.4cqw;height:4.4cqw;margin:-2.2cqw 0 0 -2.2cqw}.bcard .trk .p2{width:6cqw;height:6cqw;margin:-3cqw 0 0 -3cqw}
+.bcard .lb{position:absolute;top:-1.2cqw;transform:translateX(-50%);font-size:3.2cqw;font-weight:800;white-space:nowrap}
+.bcard .lb.o{color:var(--mut);top:auto;bottom:-1.2cqw}
+.bcard .ax{display:flex;justify-content:space-between;font-size:2.6cqw;color:var(--mut);margin-top:1cqw}
+.note{font-size:3.2cqw;color:var(--mut);text-align:center;margin-top:1cqw}
+/* mapa */
+.tiles{position:relative;flex:1}
+.tile{position:absolute;margin-left:1cqw;width:11.6cqw;height:11.6cqw;border-radius:3cqw;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;font-size:4.2cqw;border:1px solid rgba(255,255,255,.14)}
+.tile u{position:absolute;top:.6cqw;right:1cqw;font-size:2.4cqw;text-decoration:none;color:#fff}
+.tile small{font-size:2.5cqw;font-weight:700;opacity:.92}
+.mleg{display:flex;justify-content:center;gap:5cqw;font-size:3cqw;color:var(--mut);margin-top:2cqw}
+.mleg s{display:inline-block;width:3cqw;height:3cqw;border-radius:1cqw;vertical-align:-.5cqw;margin-right:1.2cqw;text-decoration:none}
+.foot{position:absolute;left:5cqw;right:5cqw;bottom:4.5cqw;font-size:2.8cqw;color:var(--mut);display:flex;justify-content:space-between}
+#err{position:absolute;inset:45% 5cqw auto;text-align:center;font-size:4cqw;color:var(--mut)}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="stories" id="stories"></div>
+  <header><div class="brand">Voto a Voto <span>· 2026</span></div><div class="chip" id="chip">carregando</div></header>
+  <div id="slides"></div>
+  <div class="foot"><span>Fonte: TSE · resultados.tse.jus.br</span><span id="upd"></span></div>
+  <div id="err">Carregando dados do TSE…</div>
+</div>
+<script>
+const REG = {
+  'Norte': ['AC','AP','AM','PA','RO','RR','TO'],
+  'Nordeste': ['AL','BA','CE','MA','PB','PE','PI','RN','SE'],
+  'Centro-Oeste': ['DF','GO','MT','MS'],
+  'Sudeste': ['ES','MG','RJ','SP'],
+  'Sul': ['PR','RS','SC'],
+  'Exterior': ['ZZ'],
+};
+const UFN = {AC:'Acre',AL:'Alagoas',AP:'Amapá',AM:'Amazonas',BA:'Bahia',CE:'Ceará',DF:'Distrito Federal',ES:'Espírito Santo',GO:'Goiás',MA:'Maranhão',MT:'Mato Grosso',MS:'Mato Grosso do Sul',MG:'Minas Gerais',PA:'Pará',PB:'Paraíba',PR:'Paraná',PE:'Pernambuco',PI:'Piauí',RJ:'Rio de Janeiro',RN:'Rio Grande do Norte',RS:'Rio Grande do Sul',RO:'Rondônia',RR:'Roraima',SC:'Santa Catarina',SP:'São Paulo',SE:'Sergipe',TO:'Tocantins',ZZ:'Exterior'};
+const REGOF = {}; for (const [k, v] of Object.entries(REG)) v.forEach(u => REGOF[u] = k);
+const GRID = {RR:[0,2],AP:[0,4],AM:[1,1],PA:[1,3],MA:[1,4],CE:[1,5],RN:[1,6],AC:[2,0],RO:[2,1],TO:[2,3],PI:[2,4],PE:[2,5],PB:[2,6],
+  MT:[3,2],GO:[3,3],BA:[3,4],SE:[3,5],AL:[3,6],MS:[4,2],DF:[4,3],MG:[4,4],ES:[4,5],SP:[5,3],RJ:[5,4],PR:[6,3],SC:[7,3],RS:[7,2]};
+const params = new URLSearchParams(location.search);
+const AUTO = params.get('auto') !== '0', SECS = +params.get('s') || 9;
+const fmt = (n, d = 0) => n.toLocaleString('pt-BR', {minimumFractionDigits: d, maximumFractionDigits: d});
+const COLORS = {'13': '#ff4d4a', '22': '#3b82ff'};
+const $ = (id) => document.getElementById(id);
+const MAXM = 45; // escala fixa (pp) dos gráficos de margem
+let D = null, cur = 0, slides = [], timer = null;
+
+const sumScopes = (round, ufs) => {
+  const m = new Map(); let total = 0;
+  for (const u of ufs) for (const [n, nm, v] of (D[round][u]?.v || [])) {
+    const o = m.get(n) || {n, nm, v: 0}; o.v += v; m.set(n, o); total += v;
+  }
+  return {m, total};
+};
+const share = (agg, n) => agg.total ? (agg.m.get(n)?.v || 0) / agg.total * 100 : null;
+const ACC = {FLAVIO: 'Flávio', GERALDO: 'Geraldo'};
+const short = (nm) => { const w = nm.split(' ')[0]; return ACC[w] || w[0] + w.slice(1).toLowerCase(); };
+function finalists() {
+  const c = (D.r2.BR?.v || []).slice().sort((a, b) => +a[0] - +b[0]);
+  return c.length >= 2 ? [c[1], c[0]].map(([n, nm]) => ({n, nm, s: short(nm), c: COLORS[n] || '#aaa'})) : []; // [esquerda, direita]
+}
+const prog = (ufs) => { // urnas apuradas ponderadas pelo nº de seções
+  let t = 0, a = 0, fin = true;
+  for (const u of ufs) { const r = D.r2[u]; if (!r) { fin = false; continue; } t += r.secTotal; a += r.secApuradas; if (!(r.tf === 's' || r.pst >= 100)) fin = false; }
+  return {pct: t ? a / t * 100 : 0, done: fin && t > 0};
+};
+const badge = (p) => p.done ? '<i class="ok">✔ apuração concluída</i>' : `<i class="pp">${fmt(p.pct, 1)}% apurado</i>`;
+const pct = (m) => 50 + Math.max(-MAXM, Math.min(MAXM, m)) / MAXM * 50;
+
+// ---- linha "dumbbell" de margem: ○ 1º turno → ● 2º turno ----
+function dRow(F, {label, sub, ufs}, big) {
+  const [A, B] = F;
+  const a1 = sumScopes('r1', ufs), a2 = sumScopes('r2', ufs);
+  const m1 = share(a1, B.n) - share(a1, A.n);
+  const has2 = a2.total > 0, m2 = has2 ? share(a2, B.n) - share(a2, A.n) : null;
+  const x1 = pct(m1), x2 = has2 ? pct(m2) : x1, ref = has2 ? m2 : m1, W = ref >= 0 ? B : A;
+  const lo = Math.min(x1, x2), hi = Math.max(x1, x2), sw = has2 ? m2 - m1 : 0;
+  return `<div class="d${big ? ' big' : ''}"><div class="n">${label}${sub ? `<small>${sub}</small>` : ''}${badge(prog(ufs))}</div>
+    <div class="trk"><i class="gr"></i><i class="mid"></i>
+      <i class="ln" style="left:${lo}%;width:${hi - lo}%;background:${W.c}"></i>
+      <b class="p p1" style="left:${x1}%"></b>${has2 ? `<b class="p p2" style="left:${x2}%;background:${W.c}"></b>` : ''}</div>
+    <div class="v" style="color:${W.c}">${W.s} +${fmt(Math.abs(ref), 1)}<small>${has2 ? (sw >= 0 ? '▶ ' + B.s : '◀ ' + A.s) + ' ' + fmt(Math.abs(sw), 1) + ' pp' : '1º turno'}</small></div></div>`;
+}
+const dLegend = (F) => `<div class="side"><span class="l">◀ ${F[0].s}</span><span class="r">${F[1].s} ▶</span></div>
+  <div class="leg"><span>Margem em pontos percentuais dos votos válidos</span><span class="k"><span>1º turno</span><span class="f">2º turno</span></span></div>`;
+
+function buildSlides() {
+  const F = finalists(); if (F.length < 2) return [];
+  const [A, B] = F;
+  const br2 = sumScopes('r2', ['BR']), br1 = sumScopes('r1', ['BR']), R2 = D.r2.BR;
+  const out = [];
+
+  // 1. placar
+  const va = br2.m.get(A.n)?.v || 0, vb = br2.m.get(B.n)?.v || 0, pa = share(br2, A.n) ?? 0, pb = share(br2, B.n) ?? 0;
+  const L = va >= vb ? A : B, diff = Math.abs(va - vb);
+  const lead = Math.abs(pa - pb) < 0.3 ? 'Disputa embolada' : `<span style="--c:${L.c}">${L.s}</span> lidera por ${fmt(diff)} votos`;
+  const card = (f, v, p) => `<div class="cand glass" style="--c:${f.c}"><div class="num">${f.n}</div><div class="nm">${f.s}</div>
+    <div class="pc"><span data-count="${p}" data-dec="2">${fmt(p, 2)}</span><small>%</small></div><div class="vt"><b data-count="${v}">${fmt(v)}</b> votos</div></div>`;
+  out.push(`<div><div class="kicker">Presidente · 2º turno</div><h1>Placar <em>nacional</em></h1></div><div class="sub">% dos votos válidos apurados</div>
+    <div class="cands">${card(A, va, pa)}${card(B, vb, pb)}</div>
+    <div class="tug"><i style="width:${pa}%;background:${A.c}"></i><i style="width:${pb}%;background:${B.c}"></i></div>
+    <div class="lead">${lead}</div>
+    <div class="stats glass"><div class="ring"><svg viewBox="0 0 100 100"><circle class="t" cx="50" cy="50" r="42"/><circle class="f" cx="50" cy="50" r="42" stroke-dasharray="${R2.pst * 2.639} 264"/></svg><b>${fmt(R2.pst, 1)}%</b></div>
+      <div class="l">Urnas apuradas<br>Votos válidos <b>${fmt(br2.total)}</b><br>Brancos <b>${fmt(R2.brancos)}</b> · Nulos <b>${fmt(R2.nulos)}</b></div></div>`);
+
+  // 2. Brasil 1º x 2º
+  const bc = (f) => {
+    const s1 = share(br1, f.n) ?? 0, s2 = share(br2, f.n) ?? 0, d = s2 - s1, LO = 35, W = 25, X = (v) => Math.max(0, Math.min(100, (v - LO) / W * 100));
+    return `<div class="bcard glass" style="--c:${f.c}"><div class="t"><b>${f.s}</b><span>${d >= 0 ? '▲' : '▼'} ${fmt(Math.abs(d), 1)} pp</span></div>
+      <div class="trk"><i class="gr"></i><i class="ln" style="left:${X(Math.min(s1, s2))}%;width:${X(Math.max(s1, s2)) - X(Math.min(s1, s2))}%;background:${f.c}"></i>
+      <b class="p p1" style="left:${X(s1)}%"></b><b class="p p2" style="left:${X(s2)}%;background:${f.c}"></b>
+      <span class="lb o" style="left:${X(s1)}%">1º: ${fmt(s1, 1)}%</span><span class="lb" style="left:${X(s2)}%;color:${f.c}">2º: ${fmt(s2, 1)}%</span></div>
+      <div class="ax"><span>35%</span><span>47,5%</span><span>60%</span></div></div>`;
+  };
+  const outros = 100 - A_s(br1, F);
+  out.push(`<div><div class="kicker">Brasil</div><h1>1º <em>×</em> 2º turno</h1></div><div class="sub">Quanto cada candidato cresceu entre os turnos</div>${bc(A)}${bc(B)}
+    <div class="note">No 1º turno, ${fmt(outros, 1)}% dos votos válidos foram para outros candidatos.</div>`);
+
+  // 3. regiões
+  out.push(`<div><div class="kicker">Comparativo</div><h1>Por <em>região</em></h1></div><div class="sub"></div>${dLegend(F)}
+    <div class="list glass">${Object.entries(REG).map(([k, ufs]) => dRow(F, {label: k === 'Centro-Oeste' ? 'C. Oeste' : k, ufs}, true)).join('')}</div>`);
+
+  // 4-5. estados ordenados pela margem do 2º turno (cai no 1º se ainda sem dados)
+  const rows = Object.keys(REGOF).map(u => {
+    const a1 = sumScopes('r1', [u]), a2 = sumScopes('r2', [u]), a = a2.total ? a2 : a1;
+    return {label: UFN[u], sub: u === 'ZZ' ? 'Voto no exterior' : u + ' · ' + (REGOF[u] === 'Centro-Oeste' ? 'C. Oeste' : REGOF[u]), ufs: [u], k: share(a, B.n) - share(a, A.n)};
+  }).sort((x, y) => x.k - y.k);
+  const N = 3, per = Math.ceil(rows.length / N);
+  for (let i = 0; i < N; i++)
+    out.push(`<div><div class="kicker">Ordem: pró-${A.s} → pró-${B.s}</div><h1>Por <em>estado</em> <span style="font-size:5cqw;color:var(--mut)">${i + 1}/${N}</span></h1></div><div class="sub"></div>${dLegend(F)}
+      <div class="list glass">${rows.slice(i * per, (i + 1) * per).map(x => dRow(F, x)).join('')}</div>`);
+
+  // 6. mapa
+  out.push(`<div><div class="kicker">2º turno</div><h1>Líder por <em>UF</em></h1></div><div class="sub">Número = diferença em pontos percentuais</div><div class="tiles">
+    ${Object.entries(GRID).map(([uf, [r, c]]) => {
+      const a = sumScopes('r2', [uf]), sa = share(a, A.n), sb = share(a, B.n);
+      if (sa == null) return `<div class="tile" style="left:${c * 12.6}cqw;top:${r * 12.6}cqw;background:rgba(255,255,255,.06);color:var(--mut)">${uf}<small>–</small></div>`;
+      const w = sa >= sb ? A : B, d = Math.abs(sa - sb), al = Math.min(1, .35 + d / 40);
+      return `<div class="tile" style="left:${c * 12.6}cqw;top:${r * 12.6}cqw;background:color-mix(in srgb,${w.c} ${Math.round(al * 100)}%,#0b1020);color:#fff">${uf}${prog([uf]).done ? '<u>✔</u>' : ''}<small>+${fmt(d, 1)}</small></div>`;
+    }).join('')}</div>
+    <div class="mleg"><span><s style="background:${A.c}"></s>${A.s}</span><span><s style="background:${B.c}"></s>${B.s}</span><span>✔ apuração concluída</span></div>`);
+  return out;
+}
+function A_s(agg, F) { return F.reduce((s, f) => s + (share(agg, f.n) || 0), 0); }
+
+// ---- ciclo de slides ----
+function render() {
+  const html = buildSlides();
+  if (!html.length) return;
+  if (html.length !== slides.length) {
+    $('slides').innerHTML = html.map((h, i) => `<section class="slide" id="s${i}"></section>`).join('');
+    $('stories').innerHTML = html.map(() => '<i><b></b></i>').join('');
+    slides = html.map(() => '');
+  }
+  html.forEach((h, i) => { if (slides[i] !== h) { $('s' + i).innerHTML = h; slides[i] = h; } });
+  show(cur % html.length, !$('s0').dataset.shown);
+  $('s0').dataset.shown = 1;
+  const R2 = D.r2.BR, stale = Date.now() - new Date(D.fetchedAt) > 5 * 60e3 || D.blocked;
+  $('chip').className = 'chip ' + (stale ? 'stale' : R2.pst >= 100 ? 'final' : 'live');
+  $('chip').textContent = stale ? 'desatualizado' : R2.pst >= 100 ? 'apuração final' : 'ao vivo';
+  $('upd').textContent = `TSE ${R2.hg} · ${R2.dg}`;
+  $('err').style.display = 'none';
+}
+function show(i, animate = true) {
+  cur = i;
+  document.querySelectorAll('.slide').forEach((s, k) => {
+    s.classList.toggle('on', k === i);
+    if (k === i && animate) { s.classList.remove('enter'); void s.offsetWidth; s.classList.add('enter'); countUp(s); }
+  });
+  document.querySelectorAll('#stories i').forEach((d, k) => {
+    d.className = k < i ? 'done' : k === i ? 'cur' : '';
+    if (k === i) { d.style.setProperty('--dur', SECS + 's'); const b = d.firstChild; b.style.animation = 'none'; void b.offsetWidth; b.style.animation = AUTO ? '' : 'none'; if (!AUTO) b.style.width = '100%'; }
+  });
+  clearTimeout(timer);
+  if (AUTO) timer = setTimeout(() => slides.length && show((cur + 1) % slides.length), SECS * 1000);
+}
+function countUp(root) {
+  root.querySelectorAll('[data-count]').forEach(el => {
+    const end = +el.dataset.count, dec = +el.dataset.dec || 0, t0 = performance.now();
+    (function f(t) {
+      const k = Math.min(1, (t - t0) / 1000), e = 1 - Math.pow(1 - k, 3);
+      el.textContent = fmt(end * e, dec); if (k < 1) requestAnimationFrame(f);
+    })(t0);
+  });
+}
+async function load() {
+  try {
+    D = await (await fetch('/api/data')).json();
+    if (D.r2.BR && D.r1.BR) render(); else $('err').textContent = 'Aguardando arquivos do TSE…';
+  } catch (e) { $('err').style.display = ''; $('err').textContent = 'Falha ao carregar — tentando de novo…'; }
+}
+if (params.get('slide')) cur = +params.get('slide');
+load(); setInterval(load, 20000);
+document.addEventListener('keydown', (e) => { if (slides.length) show((cur + (e.key === 'ArrowLeft' ? -1 : 1) + slides.length) % slides.length); });
+</script>
+</body>
+</html>
